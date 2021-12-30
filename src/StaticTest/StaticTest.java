@@ -33,6 +33,12 @@ package StaticTest;
  * 5.2 在静态方法中，只能调用静态的方法或属性；对于非静态方法
  * 5.3 对于非静态方法，既可以调用非静态的 ，也可以调用非静态的方法或属性
  *
+ * 6.1 开发中，如何确定一个属性是否要声明为static？
+ * 属性是可以被多个对象所共享的，不会随着对象的不同而不同的。
+ * 
+ * 6.2 开发中，如何确定一个方法是否要声明为static？
+ * - 操作静态属性的方法，通常设置为static的
+ * - 工具类中的方法，习惯上声明为static的。比如，Math、Arrays、Collections
  */
 public class StaticTest {
     public static void main(String[] args) {
