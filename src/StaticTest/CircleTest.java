@@ -1,6 +1,13 @@
 package StaticTest;
 
-/** static 关键字的应用 */
+/**
+ * @Description: static 关键字的应用
+ * 
+ * @author : mr.zhi(zhilx1997@sina.com)
+ * @version: v1.1
+ * @data: 2021/12/29
+ * 
+ */
 public class CircleTest {
     public static void main(String[] args) {
         Circle c1 = new Circle();
