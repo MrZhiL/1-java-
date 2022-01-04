@@ -4,7 +4,7 @@ package Abstract;
  * @Description: 抽象类和抽象方法测试
  * @author : mr.zhi(zhilx1997@sina.com)
  * @version: v1.1
- * @data: 2022/01/02
+ * @data: 2022/01/04
  * @node: 抽象类和抽象方法测试，具体的注释在 README.md
  * 
  *        abstract 关键字的使用
