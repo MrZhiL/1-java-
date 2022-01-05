@@ -50,9 +50,15 @@ abstract class Person {
         this.name = name;
     }
 
-    public void eat() {
-        System.out.println("Person will eat food!");
-    }
+    public abstract void eat();
+    // {
+    // System.out.println("Person will eat food!");
+    // }
+
+    public abstract void breath();
+    // {
+    // System.out.println("Person will breath");
+    // }
 
 }
 
@@ -64,6 +70,14 @@ class Student extends Person {
     // 1.3 子类可以调用父类中构造器来初始化对象
     Student(String name, int age) {
         super(name, age);
+    }
+
+    public void eat() {
+        System.out.println("Student will eat food!");
+    }
+
+    public void breath() {
+        System.out.println("Student will breath");
     }
 }
 
