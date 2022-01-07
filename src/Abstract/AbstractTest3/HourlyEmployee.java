@@ -29,8 +29,8 @@ public class HourlyEmployee extends SalariedEmployee {
         super(name, number, birthday);
     }
 
-    public HourlyEmployee(String name, int number, MyDate birthday, int monthlySalary, int wage, int hour) {
-        super(name, number, birthday, monthlySalary);
+    public HourlyEmployee(String name, int number, MyDate birthday, int wage, int hour) {
+        super(name, number, birthday);
         this.wage = wage;
         this.hour = hour;
     }
@@ -42,6 +42,6 @@ public class HourlyEmployee extends SalariedEmployee {
     @Override
     public String toString() {
         // 重写toString方法，输出员工类型信息及员工的name、number、birthday
-        return "HourlyEmployee[" + super.toString() + "]";
+        return "HourlyEmployee[" + super.toString();
     }
 }
