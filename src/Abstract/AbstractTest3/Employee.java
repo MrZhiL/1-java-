@@ -58,6 +58,6 @@ public abstract class Employee {
     @Override
     public String toString() {
         // 因为birthday为MyDate类型，因此需要重写MyDate中的toString方法，并且需要调用该方法（否则会输出birthday的地址）
-        return "name: " + this.name + ", number: " + this.number + "birthday:" + birthday.toString();
+        return "name: " + this.name + ", number: " + this.number + ", birthday: " + birthday.toString();
     }
 }
