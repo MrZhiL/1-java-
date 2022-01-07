@@ -1,7 +1,7 @@
 package Abstract.AbstractTest3;
 
 /**
- * @Description: 抽象类和抽象方法测试案例-3: Employee类的实现
+ * @Description: 抽象类和抽象方法测试案例3 : Employee类的实现
  * @author : mr.zhi(zhilx1997@sina.com)
  * @version: v1.1
  * @data: 2022/01/07
