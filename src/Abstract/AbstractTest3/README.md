@@ -1,0 +1,44 @@
+ * @Description: 抽象类和抽象方法测试
+ * @author : mr.zhi(zhilx1997@sina.com)
+ * @version: v1.1
+ * @data: 2022/01/04
+ * @node: 抽象类和抽象方法测试，具体的注释在 README.md
+编写工资系统、实现不同类型员工（多态）的按月发放工资。如果当月出现某个Employee对象的生日，则将该雇员的工资增加100元。
+
+实验说明：
+
+1. 定义一个Employee类，该类包含：
+   - private 成员变量：name, number, birthday, 其中birthday为MyDate类的对象；
+   - abstract方法earnings();
+   - toString() 方法输出对象的name,number,birthday。
+
+2. MyDate 类包含：
+   - private 成员变量，year，month，day；
+   - toDateString() 返回日期对应的字符串：xxxx年xx月xx日
+
+3. 定义SalariedEmployee类继承Employee类，实现按月计算工资的员工处理。该类包括：
+   - private成员变量monthlySalary;
+   - 实现父类的抽象方法earnings()，该方法返回monthlySalary值；
+   - toStriing() 方法输出员工类型信息及员工的name，number，birthday。
+
+4. 参照SalariedEmployee类定义HourlyEmployee类，实现按小时计算工资的员工处理。该类包括：
+
+   - private成员变量wage和hour；
+   - 实现父类的抽象方法earnings()，该方法返回wage*hour值；
+   - toString()方法输出员工类型信息及员工的name, number, birthday。
+
+5. 定义PayrollSystem类，创建Employee变量数组并初始化，该数组存各类雇员对象的引用。利用循环结构遍历数组元素，输出各个对象的类型name, number, birthday，以及该对象生日。当键盘输入本月月份时，如果本月是某个Employee对象的生日，还要输出增加工资信息。
+
+6. 提示：
+
+   ```java
+   // 定义People类型的数组People c1[] = new People[10];
+   // 数组元素赋值
+   c1[0] = new People("John", "0001", 20);
+   c1[1] = new People("Bob", "0002", 19);
+   // 若People有两个子类Student和Officer，则数组元素赋值时，可以使父类类型的数组指向子类。
+   c1[0] = new People("John", "0002", 20, 85.0);
+   c1[1] = new People("Bob", "0002", 19, 90.5);
+   ```
+
+   
