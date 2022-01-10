@@ -25,6 +25,12 @@ package InterfaceTest;
  *        - **如果实现的类中没有覆盖接口中的所有抽象方法，则此实现类仍为一个抽象类。**
  * 
  *        6. Java类可以实现多个接口 ---> 弥补了Java单继承性的局限性
+ * 
+ *        7. **接口和接口之间可以继承，也可以多继承**
+ * 
+ *        8. 接口的具体使用，可以体现多态性
+ * 
+ *        9. **接口：实际上可以看做是一种规范。**
  */
 
 public class InterfaceTest1 {
@@ -47,6 +53,14 @@ public class InterfaceTest1 {
         b.fly();
         b.attack();
         b.stop();
+        System.err.println("*********************************");
+
+        // 4. 接口可以实现多继承, 此时所继承的接口中的所有方法都会实现
+        Bullet2 b2 = new Bullet2();
+        b2.fly();
+        b2.attack();
+        b2.stop();
+        b2.CcTest();
     }
 }
 
@@ -121,5 +135,18 @@ class Bullet implements Flyable, Attackable {
     @Override
     public void attack() {
         System.err.println("Bullet can used to attack people");
+    }
+}
+
+// 4. 接口可以实现多继承, 此时所继承的接口中的所有方法都会实现
+interface Cc extends Flyable, Attackable {
+    void CcTest();
+}
+
+// note: 因为上面的Bullet中实现了所有的抽象方法，因此此时Bullet2不必再去实现（因为Bullet2继承与Bullet）
+class Bullet2 extends Bullet implements Cc {
+    @Override
+    public void CcTest() {
+        System.err.println("接口和类可以实现多继承");
     }
 }
