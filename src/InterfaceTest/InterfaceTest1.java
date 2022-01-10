@@ -21,24 +21,32 @@ package InterfaceTest;
  *        4. 接口中不能定义构造器！！意味着接口不可以实例化。
  * 
  *        5. **Java开发中，接口通过让类去实现（implements）的方式来实现**
- * 
  *        - **如果实现类覆盖了接口中的所有抽象方法，则此实现类就可以实例化**
  *        - **如果实现的类中没有覆盖接口中的所有抽象方法，则此实现类仍为一个抽象类。**
+ * 
+ *        6. Java类可以实现多个接口 ---> 弥补了Java单继承性的局限性
  */
 
 public class InterfaceTest1 {
     public static void main(String[] args) {
-        // 此时可以直接调用接口中的全局变量
+        // 1. 此时可以直接调用接口中的全局变量
         System.err.println(Flyable.MAX_SPEED); // 输出：79000
         System.err.println(Flyable.MIN_SPEED); // 输出：1
 
         Flyable.show(); // right, 可以调用接口中的静态方法
         // Flyable.fly(); // error, 不可以调用接口中的抽象方法
 
-        // 接口可以通过类来实现，只需要类实现接口中的方法即可
+        // 2. 接口可以通过类来实现，只需要类实现接口中的方法即可
         Plane p = new Plane();
         p.fly();
         p.stop();
+        System.err.println("*********************************");
+
+        // 3. 类可以实现多个接口（从而可以弥补单继承的局限性）
+        Bullet b = new Bullet();
+        b.fly();
+        b.attack();
+        b.stop();
     }
 }
 
@@ -71,7 +79,6 @@ interface Flyable {
 }
 
 // 2. Java开发中，接口通过让类去实现（implements）的方式来实现
-
 class Plane implements Flyable {
     // 2.1 如果实现类覆盖了接口中的所有抽象方法，则此实现类就可以实例化
     @Override
@@ -89,5 +96,30 @@ abstract class Kite implements Flyable {
     // 2.2 如果实现的类中没有覆盖接口中的所有抽象方法，则此实现类仍为一个抽象类
     public void fly() {
         System.err.println("Kite can be fly");
+    }
+}
+
+// 3. Java类可以实现多个接口 ---> 弥补了Java单继承性的局限性
+// 3.1 创建一个Attackable接口
+interface Attackable {
+    // 攻击接口
+    void attack();
+}
+
+// 3.2 类可以实现多个接口
+class Bullet implements Flyable, Attackable {
+    @Override
+    public void fly() {
+        System.err.println("Bullet can be fly");
+    }
+
+    @Override
+    public void stop() {
+        System.err.println("The Bullet will stop when the Bullet runs out of Energy");
+    }
+
+    @Override
+    public void attack() {
+        System.err.println("Bullet can used to attack people");
     }
 }
