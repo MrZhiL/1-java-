@@ -1,7 +1,5 @@
 package InterfaceTest.FactoryTest;
 
-import javax.sound.midi.SysexMessage;
-
 /**
  * @Description: 工厂模式测试 - 1.无工厂模式
  * @author : mr.zhi(zhilx1997@sina.com)
