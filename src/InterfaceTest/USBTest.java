@@ -35,9 +35,42 @@ package InterfaceTest;
 
 public class USBTest {
     public static void main(String[] args) {
-        Computer.transferData(new Flash());
+        // 1. 创建了非匿名实现类的非匿名对象
+        Flash flash = new Flash();
+        Computer.transferData(flash);
         System.err.println("***************************");
+
+        // 2. 创建了非匿名实现类的匿名对象
         Computer.transferData(new Printer());
+        System.err.println("***************************");
+
+        // 3. 创建了非匿名实现类的匿名对象
+        USB mouse = new USB() {
+            @Override
+            public void start() {
+                System.err.println("鼠标开始工作");
+            }
+
+            @Override
+            public void stop() {
+                System.err.println("鼠标停止工作");
+            }
+        };
+        Computer.transferData(mouse);
+        System.err.println("***************************");
+
+        // 4. 创建了匿名实现类的匿名对象
+        Computer.transferData(new USB() {
+            @Override
+            public void start() {
+                System.err.println("键盘开始工作");
+            }
+
+            @Override
+            public void stop() {
+                System.err.println("键盘停止工作");
+            }
+        });
     }
 }
 
