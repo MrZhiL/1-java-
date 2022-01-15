@@ -46,8 +46,11 @@ import java.io.IOException;
  *        6. 在try结构中声明的变量，当出了try结构追偿吧，就不可以再调用了。
  *        可以将变量声明在try外面，但是在try的语句块中赋值。
  * 
- *        体会：使用try-catch-finally处理编译时异常，使得程序在编译时不再报错，但是运行时仍可能报错。相当于我们使用try-catch-finally将一个编译时可能出现的异常，延迟到运行时出现。
+ *        - 体会1：使用try-catch-finally处理编译时异常，使得程序在编译时不再报错，但是运行时仍可能报错。
+ *        ​ 相当于我们使用try-catch-finally将一个编译时可能出现的异常，延迟到运行时出现。
  * 
+ *        -
+ *        体会2：开发中，由于运行时异常比较常见，所以我们通常就不针对运行时异常编写try-catch-finally。针对编译时异常，我们一定要考虑异常的处理。
  * 
  */
 public class ExceptionTest1TryCatch {
