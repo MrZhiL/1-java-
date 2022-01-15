@@ -11,6 +11,16 @@ import java.io.IOException;
  * @version: v1.1
  * @data: 2022/01/14 15:01
  * @node: try-catch-finally
+ *        1. finally为可选的
+ * 
+ *        2.
+ *        - finally中声明的代码是一定会被执行的，即使catch中又出现异常了，
+ *        - try中又return语句，catch中有return语句等情况。
+ * 
+ *        3. 什么情况下会把代码写到finally之中：
+ *        像数据库连接、输入输出流、网络编程Socket等资源，JVM是不能自动的回收的，我们需要自己手动的进行资源释放。此时的资源当中，就需要声明在finally中。
+ * 
+ * 
  */
 public class ExceptionTest2TryCatchFinally {
     public static void main(String[] args) {
