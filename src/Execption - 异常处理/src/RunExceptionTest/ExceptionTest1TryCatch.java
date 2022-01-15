@@ -80,7 +80,7 @@ public class ExceptionTest1TryCatch {
             // 将编译时异常进行try-catch处理，此时可以使得编译不再进行报错
             try {
                 File file = new File("hello.txt");
-                FileInputStream fis = new FileInputStream("file"); //
+                FileInputStream fis = new FileInputStream(file); //
 
                 // throws FileNotFoundExceptio
                 int data = fis.read();
