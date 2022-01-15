@@ -52,7 +52,7 @@
 
 
 
-### 3. 异常概述与异常体系结构
+## 3. 异常概述与异常体系结构
 
 在使用计算机语言进行项目开发的过程中，即使程序员吧代码写的尽善尽美，在系统的运行过程中仍然会遇到一些问题，因为很多问题不是靠代码能够避免的而，比如：**客户输入数据的格式，读取文件是否存在，网络是否始终通畅**等等。
 
@@ -66,4 +66,189 @@
     - **试图读取不存在的文件**
     - **网络连接中断**
     - **数组角标越界**
+
+- 对于这些错误，一般有**两种解决方法**：一是遇到错误就终止程序的运行；另一种方法是由程序员在编写程序时，就考虑到错误的检测、错误消息的提示，以及错误的处理。
+- 捕获错误最理想的是在**编译期间** ，但有的错误只有在**运行时**才会发生。比如：**除数为0，数组下标越界等**
+  - 分类：**编译时异常** 和 **运行时异常**
+
+
+
+### 1. 异常体系结构
+
+java.lang.Throwable
+
+​	|----------- java.lang.Error: 一般不编写针对性的代码进行处理
+
+​	|------------java.lang.Exception: 可以进行异常的处理
+
+​			|-------------------编译时异常（checked）：IOException（FileNotFoundException）、ClassNotFoundException
+
+​			|-------------------运行时异常（unchecked）: NullPointException、ArrayIndexOutofBoundException、ClassCastException、NumberFormatException、InputMismatchException、InputMisatchException、ArithmeticException
+
+
+
+面试题：常见的异常有哪些？举例说明。
+
+```java
+package RunExceptionTest;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ * @Description: 异常测试
+ * @author : mr.zhi(zhilx1997@sina.com)
+ * @version: v1.1
+ * @data: 2022/01/14 15:01
+ * @node: 异常体系结构
+ * 
+ *        java.lang.Throwable
+ * 
+ *        ​|----------- java.lang.Error: 一般不编写针对性的代码进行处理
+ * 
+ *        ​|------------java.lang.Exception: 可以进行异常的处理
+ * 
+ *        |-------------------编译时异常（checked）：IOException（FileNotFoundException）、ClassNotFoundException
+ * 
+ *        ​|-------------------运行时异常（unchecked, RunExceptionTest）:
+ *        NullPointException、ArrayIndexOutofBoundException、ClassCastException、
+ *        NumberFormatException、InputMismatchException、ArithmeticException
+ */
+
+public class ExceptionTest {
+    public static void main(String[] args) {
+
+        /** 一 、 运行时异常 */
+        {
+            // 1.1. NullPointException 异常
+            int[] arr = null;
+            // System.out.println(arr[1]); // Exception : java.lang.NullPointException
+
+            // 1.2. ArrayIndexOutofBoundException 异常
+            arr = new int[3];
+            // System.out.println(arr[3]); // Exception :
+            // java.lang.ArrayIndexOutOfBoundsException
+
+            // 1.3. StringIndexOutOfBoundsException 异常
+            if (false) {
+                String str = new String("abc");
+                System.out.println(str.charAt(4));
+            }
+
+            // 1.4. ClassCastException 异常
+            if (false) {
+                Object obj = new Date();
+                String str = (String) obj; // Exception : java.lang.ClassCastException
+            }
+
+            // 1.5. NumberFormatException 异常
+            if (false) {
+                String str = "123";
+                Integer in = Integer.parseInt(str);
+                System.out.println("in = " + in);
+
+                str = "abc";
+                in = Integer.parseInt(str); // Exception : java.lanag.NumberFormatException
+                System.out.println("in = " + in);
+            }
+
+            // 1.6. InputMismatchException 异常
+            if (false) {
+                Scanner sc = new Scanner(System.in);
+                int k = sc.nextInt(); // 如果此时输入不是整数，则会报 java.util.InputMismatchException 异常
+                System.out.println("k = " + k);
+                sc.close();
+            }
+
+            // 1.7. ArithmeticException 异常
+            if (false) {
+                int a = 10;
+                int b = 0; // 分母为0，报 java.lang.ArithmeticException 的异常
+                System.out.println(a + " / " + b + " = " + (a / b));
+            }
+        }
+
+        /** 二、编译时异常 */
+        {
+            // 2.1 IOException（FileNotFoundException） 异常
+            if (false) {
+                File file = new File("hello.txt");
+                FileInputStream fis = new FileInputStream("file"); // java.io.FileInputStream.FileInputStream(File file)
+                                                                   // throws FileNotFoundExceptio
+                int data = fis.read();
+                while (data != -1) {
+                    System.out.println((char) data);
+                    data = fis.read();
+                }
+
+                fis.close();
+            }
+        }
+    }
+}
+
+```
+
+
+
+##  4. 异常处理机制
+
+在编写程序时，经常要**在可能出现错误的地方加上检测的代码**，如进行x/y运算时，要**检测分母为0，数据为空，输入的不是数字而是字符**等。过多的if-else分支会导致程序的代码加长、臃肿、可读性差。因此采用**异常处理机制**。
+
+Java采用的异常处理机制，是将异常处理的程序代码集中在一起，与正常的程序代码分开，使得程序简洁、优雅，并易于维护。
+
+异常处理过程：抓抛模型
+
+- 过程一：“抛”：
+  - 程序在正常执行的过程中，一旦出现异常，就会在异常代码处生成一个对应异常类的对象。并将此对象抛出。
+  - 一旦抛出对象以后，其后的代码便不再执行。
+
+- 过程二：“抓”
+  - 可以理解为异常的处理方式：1）try-catch-finally 2) throws
+
+### 4.1 try-catch-finally 的使用
+
+```java
+try {
+	// 1. 可能出现异常的代码
+} catch(异常类型1 变量名1){
+	// 2.1 对出现异常的代码的处理
+} catch(异常类型2 变量名2){
+	// 2.2 对出现异常的代码的处理
+} catch(异常类型3 变量名3){
+	// 2.3 对出现异常的代码的处理
+} ... 
+finally {
+	// 3. 将一定会执行的代码放在这里
+}
+```
+
+
+
+说明：
+
+1. finally是可选的
+
+2. 使用try将可能出现异常代码包装起来，在执行过程中，一旦出现异常，就会生成一个对应异常类的对象，根据此对象的类型，去catch中进行匹配。
+
+3. 一旦try中的异常对象匹配到某一个catch时，就进入catch中进行异常的处理。**一旦处理完成后，会跳出当前的try-catch结构**（在没有写final的情况下），然后继续执行剩下的代码。
+
+4. catch中的异常类型如果没有子父类关系，则谁声明在上，谁声明在下无所谓。
+
+   **catch中的异常类型如果满足子父类要求，则要求子类一定声明在父类的上面。否则会报错。**
+
+5. 常用的异常对象处理的方法：
+
+   1. String getMessage();
+   2. printStackTrace(); // 打印堆栈信息
+
+6. 在try结构中声明的变量，当出了try结构追偿吧，就不可以再调用了。
+
+   可以将变量声明在try外面，但是在try的语句块中赋值。
+
+体会：使用try-catch-finally处理编译时异常，使得程序在编译时不再报错，但是运行时仍可能报错。
+
+​		   相当于我们使用try-catch-finally将一个编译时可能出现的异常，延迟到运行时出现。
 
