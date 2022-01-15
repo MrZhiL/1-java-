@@ -89,7 +89,7 @@ public class ExceptionTest2TryCatchFinally {
     public static void test04() {
         FileInputStream fis = null;
         try {
-            File file = new File("hello.txt");
+            File file = new File("hello1.txt");
             fis = new FileInputStream(file);
 
             int data = fis.read();
@@ -105,13 +105,16 @@ public class ExceptionTest2TryCatchFinally {
             e.printStackTrace();
         } finally {
             try {
+                // note: 此时需要检查fis指针是否为空，避免出现空指针异常
                 if (fis != null) {
                     fis.close();
                 }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            System.out.println("-------------------------------");
         }
     }
 }
