@@ -536,6 +536,6 @@ class Person {
 
 <img src="D:\Program Files (x86)\JavaProject\1-Java基础部分\JavaProject3\JavaProject3\src\Execption - 异常处理\Java知识点3 - 异常处理.assets\image-20220116101323256.png" alt="image-20220116101323256" style="zoom:67%;" />
 
-throw为生成一个异常对象
+throw 表示抛出一个异常类的对象，生成异常对象的过程。声明在方法体内。
 
-throws为抛出一个异常
+throws 属于异常处理的一种方式，声明在方法的声明处。
