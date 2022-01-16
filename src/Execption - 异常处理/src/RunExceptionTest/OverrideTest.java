@@ -10,7 +10,7 @@ import java.io.IOException;
  * @data: 2022/01/16 08:25
  * @node: 子类重写父类中的方法规则
  *        1. 子类重写的方法抛出的异常类型不大于父类被重写的方法抛出的异常类型
- * 
+ *        2. 如果父类中没有抛异常，则子类一定不可以抛出异常
  */
 public class OverrideTest {
     public static void main(String[] args) {
