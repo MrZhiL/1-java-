@@ -193,7 +193,7 @@ public class ExceptionTest {
 
 
 
-##  4. 异常处理机制
+##  4. 异常处理机制一：try-catch-finally
 
 在编写程序时，经常要**在可能出现错误的地方加上检测的代码**，如进行x/y运算时，要**检测分母为0，数据为空，输入的不是数字而是字符**等。过多的if-else分支会导致程序的代码加长、臃肿、可读性差。因此采用**异常处理机制**。
 
@@ -248,7 +248,294 @@ finally {
 
    可以将变量声明在try外面，但是在try的语句块中赋值。
 
-体会：使用try-catch-finally处理编译时异常，使得程序在编译时不再报错，但是运行时仍可能报错。
+- 体会1：使用try-catch-finally处理编译时异常，使得程序在编译时不再报错，但是运行时仍可能报错。
 
 ​		   相当于我们使用try-catch-finally将一个编译时可能出现的异常，延迟到运行时出现。
 
+- 体会2：开发中，由于运行时异常比较常见，所以我们通常就不针对运行时异常编写try-catch-finally。针对编译时异常，我们一定要考虑异常的处理。
+
+```java
+package RunExceptionTest;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+/**
+ * @Description: 异常处理过程一：try-catch-finally
+ * @author : mr.zhi(zhilx1997@sina.com)
+ * @version: v1.1
+ * @data: 2022/01/14 15:01
+ * @node: try-catch-finally
+ */
+public class ExceptionTest1TryCatch {
+    public static void main(String[] args) {
+        // 1. try-catch 异常测试1
+        {
+            String str = "123";
+            str = "abc";
+            try {
+                int num = Integer.parseInt(str);
+                System.out.println("str转换成功，num = " + num);
+
+            } catch (NumberFormatException e) {
+                // 在catch中的常用方法 1. String getMessage() 2. printStackTrace()
+                // System.out.println(e);
+                // System.out.println(e.getMessage());
+                e.printStackTrace();
+                System.out.println("数值转换失败，请检查输入是否正确！");
+            } catch (NullPointerException e) {
+                System.out.println("出现空指针异常，请检查变量初始化！");
+            } catch (Exception e) { // 因为Exception处于高层，因此需要放在后面
+                System.out.println("出现异常");
+            }
+
+            System.out.println("str = " + str);
+        }
+
+        // 2. 对编译异常进行try-catch处理
+        {
+            // 将编译时异常进行try-catch处理，此时可以使得编译不再进行报错
+            try {
+                File file = new File("hello.txt");
+                FileInputStream fis = new FileInputStream("file"); //
+
+                // throws FileNotFoundExceptio
+                int data = fis.read();
+                while (data != -1) {
+                    System.out.println((char) data);
+                    data = fis.read();
+                }
+
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+}
+
+```
+
+
+
+### 4.2 try-catch-finally 中finally的作用
+
+1. finally为可选的
+2. finally中声明的代码是一定会被执行的，即使catch中又出现异常了，try中又return语句，catch中有return语句等情况。
+3. 什么情况下会把代码写到finally之中：
+   - 像数据库连接、输入输出流、网络编程Socket等资源，JVM是不能自动的回收的，我们需要自己手动的进行资源释放。此时的资源当中，就需要声明在finally中。
+
+
+
+## 5. 异常处理的方式二：throws + 异常处理
+
+1. `throws + 异常类型` 写在方法声明处。指明此方法执行时，可能会抛出异常类型。
+
+   一旦当方法体执行时，出现异常，仍会在异常代码处生成一个异常类对象，此对象满足throws异常类型时，就会被抛出。
+
+   此时异常代码后面的代码，就不会再被执行。
+
+2. 体会：
+
+   1. try-catch-finally: 真正的将异常给处理掉了
+   2. throws的方式只是将异常抛给了方法的调用者，并没有真正的将异常处理掉。
+
+## 6. 子类重写的规则之一：
+
+1. 子类重写的方法抛出的异常类型不大于父类被重写的方法抛出的异常类型
+2.  如果父类中没有抛异常，则子类一定不可以抛出异常
+
+
+
+## 7. 开发中选择那种方式进行异常处理？
+
+1. 如果父类中被重写的方法没有throws方式处理异常，则子类重写的方法也不能使用throws，意味着如果子类重写的方法中有异常，必须使用try-catch-finally方式处理。
+2. 在执行方法a时，先后又调用了另外的几个方法，这几个方法时递进关系执行的。我们建议这几个方法使用throws的方式进行处理。而执行的方法a可以考虑使用try-catch-finally方式进行处理。
+
+
+
+## 8. 手动抛出异常
+
+关于异常对象的产生：系统自动生成的异常对象；手动的生成一个异常对象，并抛出（**throw**）
+
+```java
+package RunExceptionTest;
+
+/**
+ * @Description: 手动抛出异常测试
+ * @author : mr.zhi(zhilx1997@sina.com)
+ * @version: v1.1
+ * @data: 2022/01/16 08:55
+ * @node: 手动抛出异常：
+ *        1. 关于异常对象的产生：系统自动生成的异常对象；
+ *        2. 手动的生成一个异常对象，并抛出（**throw**）
+ */
+public class ExceptionThrowTest {
+    public static void main(String[] args) {
+        try {
+            Person p = new Person();
+            p.Register(-11);
+            System.out.println(p);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+}
+
+class Person {
+    private int id;
+
+    public void Register(int id) throws Exception {
+        if (id > 0) {
+            this.id = id;
+        } else {
+            // 1. 通过打印来通知用户
+            System.out.println("输入ID需要为正整数！");
+
+            // 2. 通过throw进行异常的抛出，运行时异常可以不进行处理
+            // throw new RuntimeException("throw: 输入ID需要为正整数！");
+
+            // 3. 通过thros进行异常的抛出，非运行时异常必须进行try-catch的处理
+            throw new Exception("throw: 输入ID需要为正整数！");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Person[id = " + id + "]";
+    }
+}
+
+```
+
+
+
+## 9. 用户自定义异常类
+
+1. 需要继承与现有的异常结构：RuntimeException、Exception
+
+2. 提供一个全局常量 `serialVersionUID`，每个异常类有一个唯一的并且不同的UID。
+
+3.  提供重载的构造器
+
+   ```java
+   package RunExceptionTest;
+   
+   /**
+    * @Description: 自定义异常类
+    * @author : mr.zhi(zhilx1997@sina.com)
+    * @version: v1.1
+    * @data: 2022/01/16 09:10
+    * @node: 自定义异常类注意事项：
+    *        1. 需要继承与现有的异常结构：RuntimeException、Exception
+    *        2. 提供一个全局常量 `serialVersionUID`，每个异常类有一个唯一的并且不同的UID。
+    *        3. 提供重载的构造器
+    */
+   
+   // 1. 需要继承与现有的异常结构：RuntimeException、Exception
+   public class MyExceptionClass extends RuntimeException {
+       // 2. 提供一个全局常量 `serialVersionUID`，每个异常类有一个唯一的并且不同的UID。
+       static final long serialVersionUID = -7034897190745766939L;
+   
+       // 3. 提供重载的构造器
+       public MyExceptionClass() {
+   
+       }
+   
+       public MyExceptionClass(String msg) {
+           super(msg);
+       }
+   }
+   
+   ```
+
+   
+
+## 10. 异常的处理联系
+
+1. 异常的基本处理
+
+   ```java
+   package RunExceptionTest;
+   
+   /**
+    * @Description: 异常测试1
+    * @author : mr.zhi(zhilx1997@sina.com)
+    * @version: v1.1
+    * @data: 2022/01/16 09:25
+    * @node: 异常联系：基本使用
+    */
+   public class ReturnExceptionDemo {
+       // 1. 创建异常1
+       static void method1() {
+           try {
+               System.out.println("Input Method A");
+               // 在抛出异常前会先处理finally语句块中的代码，因此“用A方法的finally”会优先运行
+               throw new RuntimeException("制作异常");
+           } finally {
+               System.out.println("用A方法的finally");
+           }
+       }
+   
+       // 2. 创建method2
+       static void method2() {
+           try {
+               System.out.println("Input Method B");
+               return;
+           } finally {
+               System.out.println("用B方法处理异常");
+           }
+       }
+   
+       public static void main(String[] args) {
+           try {
+               method1();
+           } catch (RuntimeException e) {
+               System.out.println(e.getMessage());
+           }
+   
+           System.out.println("-----------------------------");
+   
+           method2();
+       }
+   }
+   
+   -------------------输出-----------------
+   Input Method A
+   用A方法的finally
+   制作异常
+   -----------------------------
+   Input Method B
+   用B方法处理异常
+   ```
+
+   
+
+2. 练习
+
+   ```
+   1. 编写应用程序EcmDef.java，接收命令行的两个参数，要求不能输入负数，计算两数相除。
+      对数据类型不一致（NumberFormatException）、缺少命令行参数  （ArrayIndexOutOfBoundException）、除0（ArighmeticException）及输入负数（EcDef自定义的异常）进行异常处理
+   2. 提示：
+   	(1) 在主类（EcmDef）中定义异常方法（ecm）完成两数相除功能。
+   	(2) 在main() 方法中使用异常处理语句进行异常处理。
+   	(3) 在程序中，自定义对应输入负数的异常类（EcDef）。
+   	(4) 运行时接受参数 java EcmDef 20 10 // args[0] = "20", args[1] = "10"
+   	(5) Integer类的static方法parseInt(String s)将s转换为对应的int值。
+   ```
+
+   
+
+## 11. 总结 ：异常处理的5个关键字
+
+<img src="D:\Program Files (x86)\JavaProject\1-Java基础部分\JavaProject3\JavaProject3\src\Execption - 异常处理\Java知识点3 - 异常处理.assets\image-20220116101323256.png" alt="image-20220116101323256" style="zoom:67%;" />
+
+throw为生成一个异常对象
+
+throws为抛出一个异常
